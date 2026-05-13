@@ -90,7 +90,7 @@ class AiDevServerStack(Stack):
             "set -eux",
             "# ── System update ──────────────────────────────────────────────",
             "dnf update -y",
-            "dnf install -y git",
+            "dnf install -y git tree",
 
             "# ── AWS CLI ────────────────────────────────────────────────────",
             "dnf install -y awscli",
