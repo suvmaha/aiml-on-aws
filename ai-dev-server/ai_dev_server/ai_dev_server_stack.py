@@ -76,6 +76,20 @@ class AiDevServerStack(Stack):
                 iam.ManagedPolicy.from_aws_managed_policy_name("AWSLambda_FullAccess"),
                 iam.ManagedPolicy.from_aws_managed_policy_name("CloudWatchLogsFullAccess"),
             ],
+            inline_policies={
+                "CdkDeployPolicy": iam.PolicyDocument(
+                    statements=[
+                        iam.PolicyStatement(
+                            actions=["sts:AssumeRole"],
+                            resources=["arn:aws:iam::*:role/cdk-*"],
+                        ),
+                        iam.PolicyStatement(
+                            actions=["ssm:GetParameter"],
+                            resources=["arn:aws:ssm:*:*:parameter/cdk-bootstrap/*"],
+                        ),
+                    ]
+                )
+            },
         )
 
         # ── AMI — Amazon Linux 2023 ────────────────────────────────────────────
@@ -110,8 +124,9 @@ class AiDevServerStack(Stack):
             "pip3.11 install boto3 strands-agents strands-agents-tools",
 
             "# ── uv (Python package manager — required by AgentCore CLI) ────",
-            "curl -LsSf https://astral.sh/uv/install.sh | sh",
+            "curl -LsSf https://astral.sh/uv/install.sh | HOME=/home/ec2-user sh",
             'echo \'export PATH="$HOME/.local/bin:$PATH"\' >> /home/ec2-user/.bashrc',
+            "chown -R ec2-user:ec2-user /home/ec2-user/.local",
 
             "# ── Clone aiml-on-aws repo (scripts, tests) ────────────────────",
             "git clone https://github.com/jdluther2025/aiml-on-aws.git /home/ec2-user/aiml-on-aws",
