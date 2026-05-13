@@ -75,7 +75,6 @@ class AiDevServerStack(Stack):
                 iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess"),
                 iam.ManagedPolicy.from_aws_managed_policy_name("AWSLambda_FullAccess"),
                 iam.ManagedPolicy.from_aws_managed_policy_name("CloudWatchLogsFullAccess"),
-                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBedrockAgentCoreFullAccess"),
             ],
         )
 
