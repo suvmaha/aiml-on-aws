@@ -106,9 +106,9 @@ class AiDevServerStack(Stack):
             "# ── AgentCore CLI ───────────────────────────────────────────────",
             "npm install -g @aws/agentcore",
 
-            "# ── Python + boto3 (for Bedrock in future blogs) ───────────────",
+            "# ── Python + boto3 + Strands ───────────────────────────────────",
             "dnf install -y python3.11 python3.11-pip",
-            "pip3.11 install boto3",
+            "pip3.11 install boto3 strands-agents strands-agents-tools",
 
             "# ── uv (Python package manager — required by AgentCore CLI) ────",
             "curl -LsSf https://astral.sh/uv/install.sh | sh",
