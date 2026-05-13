@@ -87,6 +87,10 @@ class AiDevServerStack(Stack):
                             actions=["ssm:GetParameter"],
                             resources=["arn:aws:ssm:*:*:parameter/cdk-bootstrap/*"],
                         ),
+                        iam.PolicyStatement(
+                            actions=["bedrock-agentcore:InvokeAgentRuntime"],
+                            resources=["arn:aws:bedrock-agentcore:*:*:runtime/*"],
+                        ),
                     ]
                 )
             },
