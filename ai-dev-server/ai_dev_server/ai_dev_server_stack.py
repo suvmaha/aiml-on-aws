@@ -67,9 +67,15 @@ class AiDevServerStack(Stack):
 
         role = iam.Role(self, "AiDevServerRole",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
-            description="AI Dev Server - Bedrock access via IAM role (no API keys on server)",
+            description="AI Dev Server - Bedrock and AgentCore access via IAM role (no API keys on server)",
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBedrockFullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AWSCloudFormationFullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("IAMFullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonS3FullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AWSLambda_FullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("CloudWatchLogsFullAccess"),
+                iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBedrockAgentCoreFullAccess"),
             ],
         )
 
@@ -97,9 +103,16 @@ class AiDevServerStack(Stack):
             "# ── Claude Code CLI ────────────────────────────────────────────",
             "npm install -g @anthropic-ai/claude-code",
 
+            "# ── AgentCore CLI ───────────────────────────────────────────────",
+            "npm install -g @aws/agentcore",
+
             "# ── Python + boto3 (for Bedrock in future blogs) ───────────────",
             "dnf install -y python3.11 python3.11-pip",
             "pip3.11 install boto3",
+
+            "# ── uv (Python package manager — required by AgentCore CLI) ────",
+            "curl -LsSf https://astral.sh/uv/install.sh | sh",
+            'echo \'export PATH="$HOME/.local/bin:$PATH"\' >> /home/ec2-user/.bashrc',
 
             "# ── Clone aiml-on-aws repo (scripts, tests) ────────────────────",
             "git clone https://github.com/jdluther2025/aiml-on-aws.git /home/ec2-user/aiml-on-aws",
